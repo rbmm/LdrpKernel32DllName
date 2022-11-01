@@ -1,0 +1,5 @@
+EXPORTS
+
+DoInit @15591 NONAME PRIVATE
+DllRegisterServer PRIVATE
+

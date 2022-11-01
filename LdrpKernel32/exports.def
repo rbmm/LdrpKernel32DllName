@@ -1,0 +1,4 @@
+EXPORTS
+
+BaseThreadInitThunk PRIVATE
+TermsrvGetWindowsDirectoryW=kernel32.TermsrvGetWindowsDirectoryW PRIVATE

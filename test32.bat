@@ -1,0 +1,1 @@
+%systemroot%\syswow64\regsvr32.exe /s payload32.dll
