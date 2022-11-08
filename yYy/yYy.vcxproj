@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <ProjectGuid>{0FDB181E-9880-9B2C-B1F8-62FB9D86679B}</ProjectGuid>
-    <RootNamespace>turbo</RootNamespace>
+    <RootNamespace>yYy</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <UserRootDir>$(SolutionDir)MSBuild\v4.0</UserRootDir>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
