@@ -106,11 +106,9 @@ HRESULT DoInit()
 
 	if (0 <= status)
 	{
-		T_HOOK_ENTRY entry = { 0, hook_CreateProcessInternalW, &__imp_CreateProcessInternalW };
-
-		if (PVOID pv = GetCreateAddr())
+		if (__imp_CreateProcessInternalW = GetCreateAddr())
 		{
-			status = TrHook(pv, &entry);
+			status = TrHook(&__imp_CreateProcessInternalW, hook_CreateProcessInternalW );
 		}
 		else
 		{

@@ -42,7 +42,7 @@ union Z_DETOUR_TRAMPOLINE
 
 	PVOID Init(PVOID pvTarget);
 
-	NTSTATUS Set(_In_opt_ BOOLEAN bProtect = TRUE);
+	NTSTATUS Set();
 
 	NTSTATUS Remove();
 };

@@ -125,10 +125,16 @@ void* Z_DETOUR_REGION::operator new(size_t, ULONG_PTR min, ULONG_PTR max)
 			{
 				SIZE_T RegionSize = gAllocationGranularity;
 
-				if (0 <= NtAllocateVirtualMemory(NtCurrentProcess(), (void**)&addr, 0, 
+				switch (NtAllocateVirtualMemory(NtCurrentProcess(), (void**)&addr, 0, 
 					&RegionSize, MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE))
 				{
+				case STATUS_CONFLICTING_ADDRESSES:
+					min = (UINT_PTR)mbi.BaseAddress;
+					break;
+				case STATUS_SUCCESS:
 					return (PVOID)addr;
+				default: 
+					return 0;
 				}
 			}
 		}
@@ -260,7 +266,7 @@ void Z_DETOUR_TRAMPOLINE::operator delete(PVOID pv)
 	Z_DETOUR_REGION::_free((Z_DETOUR_TRAMPOLINE*)pv);
 }
 
-NTSTATUS Z_DETOUR_TRAMPOLINE::Set(_In_opt_ BOOLEAN bProtect/* = TRUE*/)
+NTSTATUS Z_DETOUR_TRAMPOLINE::Set()
 {
 	struct {
 		ULONG op;
@@ -298,8 +304,7 @@ NTSTATUS Z_DETOUR_TRAMPOLINE::Set(_In_opt_ BOOLEAN bProtect/* = TRUE*/)
 #endif//#ifdef _M_IX86
 
 	SIZE_T size = cbRestore;
-	NTSTATUS status = bProtect ? 
-		ZwProtectVirtualMemory(NtCurrentProcess(), &pv, &size, PAGE_EXECUTE_READWRITE, &j.op) : STATUS_SUCCESS;
+	NTSTATUS status = ZwProtectVirtualMemory(NtCurrentProcess(), &pv, &size, PAGE_EXECUTE_READWRITE, &j.op);
 
 	if (0 > status)
 	{
@@ -310,7 +315,7 @@ NTSTATUS Z_DETOUR_TRAMPOLINE::Set(_In_opt_ BOOLEAN bProtect/* = TRUE*/)
 
 	memcpy(pvJmp, &j.jmp_e9, cbRestore);
 
-	if (bProtect && j.op != PAGE_EXECUTE_READWRITE)
+	if (j.op != PAGE_EXECUTE_READWRITE)
 	{
 		ZwProtectVirtualMemory(NtCurrentProcess(), &pv, &size, j.op, &j.op);
 	}
