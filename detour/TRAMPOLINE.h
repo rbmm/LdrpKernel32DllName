@@ -17,7 +17,7 @@ union Z_DETOUR_TRAMPOLINE
 		PVOID  pvDetour;       // first instruction of detour function.
 		PVOID  pvJmp;
 		PVOID  pvRemain;       // first instruction after moved code.
-		BYTE   rbCode[32];     // target code + jmp [pvRemain]
+		BYTE   rbCode[24];     // target code + jmp [pvRemain]
 		BYTE   rbRestore[8];   // original target code.
 	};
 

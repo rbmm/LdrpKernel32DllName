@@ -21,9 +21,6 @@
     <ClCompile Include="LDasm.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TRAMPOLINE.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
