@@ -460,6 +460,19 @@ UCHAR detour_is_code_filler(PBYTE pbCode)
 	case NOP: // NOP
 		return 1;
 
+#ifdef _M_IX86
+	case 0x8D:
+		switch (pbCode[1])
+		{
+		case 0x9B: // lea ebx,[ebx]
+			return pbCode[2] == 0x00 && pbCode[3] == 0x00 && pbCode[4] == 0x00 && pbCode[5] == 0x00 ? 6 : 0;
+		case 0xA4: // lea esp,[esp]
+			return pbCode[2] == 0x24 && pbCode[3] == 0x00 && 
+				pbCode[4] == 0x00 && pbCode[5] == 0x00 && pbCode[6] == 0x00 ? 7 : 0;
+		}
+		break;
+#endif//_M_IX86
+
 	case 0x66:
 		switch (pbCode[1])
 		{
