@@ -1,5 +1,11 @@
 #pragma once
 
+struct DTA;
+
+enum {
+	SIZE_OF_JMP = 5
+};
+
 union Z_DETOUR_TRAMPOLINE 
 {
 	Z_DETOUR_TRAMPOLINE* Next;
@@ -14,16 +20,26 @@ union Z_DETOUR_TRAMPOLINE
 			};
 		};
 		ULONG  disp;
-		PVOID  pvDetour;       // first instruction of detour function.
-		PVOID  pvJmp;
-		PVOID  pvRemain;       // first instruction after moved code.
-		BYTE   rbCode[24];     // target code + jmp [pvRemain]
-		BYTE   rbRestore[8];   // original target code.
+		PVOID  pvDetour;		// address of detour function.
+		PVOID  pvJmp;			// address of modification in original code
+		PVOID  pvAfter;			// first instruction after moved code.
+		BYTE   rbCode[23];		// target code + Jmp pvAfter
+		BYTE   cbCode;
+		BYTE   rbRestore[7];	// saved original code.
+
+		union {
+			UCHAR o;
+			struct {
+				// Jxx rel8 -> Jxx rel32 ( + 4 bytes )
+				UCHAR o1 : 4;
+				UCHAR o2 : 4;
+			};
+		};
 	};
 
 	~Z_DETOUR_TRAMPOLINE(){}
 
-	Z_DETOUR_TRAMPOLINE(PVOID pvDetour) : pvDetour(pvDetour)
+	Z_DETOUR_TRAMPOLINE(PVOID pvDetour) : pvDetour(pvDetour), pvAfter(0), pvJmp(0), cbCode(0), o(0)
 	{
 		ff250000 = 0x25ff0000;
 #if defined(_M_X64)  
@@ -45,4 +61,6 @@ union Z_DETOUR_TRAMPOLINE
 	NTSTATUS Set();
 
 	NTSTATUS Remove();
+
+	void Expand(_Inout_ DTA* Lens);
 };

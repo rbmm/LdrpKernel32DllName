@@ -108,7 +108,10 @@ HRESULT DoInit()
 	{
 		if (__imp_CreateProcessInternalW = GetCreateAddr())
 		{
+			ThreadInfo* pti;
+			SuspendAll(&pti);
 			status = TrHook(&__imp_CreateProcessInternalW, hook_CreateProcessInternalW );
+			ResumeAndFree(pti);
 		}
 		else
 		{

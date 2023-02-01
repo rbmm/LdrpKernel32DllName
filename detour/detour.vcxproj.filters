@@ -24,6 +24,9 @@
     <ClCompile Include="TRAMPOLINE.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="threads.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="detour.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TRAMPOLINE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="threads.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

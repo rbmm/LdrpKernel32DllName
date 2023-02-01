@@ -5,7 +5,9 @@ _NT_BEGIN
 
 #include "TRAMPOLINE.h"
 #include "detour.h"
+#include "threads.h"
 
+// check for JMP [m64] // import
 PVOID TestJmp(PBYTE pv)
 {
 __loop:
@@ -47,7 +49,7 @@ NTSTATUS NTAPI TrInit(PVOID ImageBase)
 	return STATUS_NOT_FOUND;
 }
 
-NTSTATUS NTAPI TrHook(PVOID pv, T_HOOK_ENTRY* entry)
+NTSTATUS NTAPI TrHook(_In_ PVOID pv, T_HOOK_ENTRY* entry, _In_opt_ ThreadInfo* pti)
 {
 	NTSTATUS status = STATUS_UNSUCCESSFUL;
 
@@ -62,7 +64,17 @@ NTSTATUS NTAPI TrHook(PVOID pv, T_HOOK_ENTRY* entry)
 
 			if (0 <= (status = pTramp->Set()))
 			{
-				//DbgPrint("%p[%p -> %p]\n", pTramp, pThunk, pv);
+				Dbg_Print("0x%p -> 0x%p -> 0x%p [0x%p]\n", pThunk, entry->hook, pv, pTramp);
+
+				if (pTramp->pvAfter)
+				{
+					DTA Lens { };
+
+					pTramp->Expand(&Lens);
+
+					MovePc(pti, (ULONG_PTR)pTramp->pvJmp, (ULONG_PTR)pTramp->rbCode, SIZE_OF_JMP, &Lens);
+				}
+
 				entry->hook = pThunk;
 				entry->pTramp = pTramp;
 				return STATUS_SUCCESS;
@@ -76,7 +88,7 @@ NTSTATUS NTAPI TrHook(PVOID pv, T_HOOK_ENTRY* entry)
 	return status;
 }
 
-NTSTATUS NTAPI TrUnHook(T_HOOK_ENTRY* entry)
+NTSTATUS NTAPI TrUnHook(_In_ T_HOOK_ENTRY* entry, _In_opt_ ThreadInfo* pti)
 {
 	if (Z_DETOUR_TRAMPOLINE* pTramp = entry->pTramp)
 	{
@@ -85,6 +97,30 @@ NTSTATUS NTAPI TrUnHook(T_HOOK_ENTRY* entry)
 		if (0 > status)
 		{
 			return status;
+		}
+
+		DTA Lens { };
+		pTramp->Expand(&Lens);
+
+		if (Lens.ofs1)
+		{
+			Lens.add1 = -4;
+			Lens.ofs1 += 4;
+		}
+		
+		if (Lens.ofs2)
+		{
+			Lens.add2 = -4;
+			Lens.ofs2 += 8;
+		}
+
+		MovePc(pti, (ULONG_PTR)&pTramp->ff25, (ULONG_PTR)pTramp->pvDetour, 1, &Lens);
+
+		if (pTramp->pvAfter)
+		{
+			ULONG cbCode = pTramp->cbCode;
+			MovePc(pti, (ULONG_PTR)pTramp->rbCode, (ULONG_PTR)pTramp->pvJmp, cbCode, &Lens);
+			MovePc(pti, (ULONG_PTR)pTramp->rbCode + cbCode, (ULONG_PTR)pTramp->pvAfter, 1, &Lens);
 		}
 
 		*entry->pThunk = entry->hook;
@@ -97,26 +133,26 @@ NTSTATUS NTAPI TrUnHook(T_HOOK_ENTRY* entry)
 	return STATUS_SUCCESS;
 }
 
-void NTAPI TrUnHook(_In_ T_HOOK_ENTRY* entry, _In_ ULONG n)
+void NTAPI TrUnHook(_In_ T_HOOK_ENTRY* entry, _In_ ULONG n, _In_opt_ ThreadInfo* pti)
 {
 	do 
 	{
-		TrUnHook(entry++);
+		TrUnHook(entry++, pti);
 	} while (--n);
 }
 
-void NTAPI TrHook(_In_ T_HOOK_ENTRY* entry, _In_ ULONG n)
+void NTAPI TrHook(_In_ T_HOOK_ENTRY* entry, _In_ ULONG n, _In_opt_ ThreadInfo* pti)
 {
 	do 
 	{
-		TrHook(*entry->pThunk, entry);
+		TrHook(*entry->pThunk, entry, pti);
 	} while (entry++, --n);
 }
 
-NTSTATUS NTAPI TrHook(_Inout_ void** p__imp, _In_ PVOID hook)
+NTSTATUS NTAPI TrHook(_Inout_ void** p__imp, _In_ PVOID hook, _In_opt_ ThreadInfo* pti)
 {
 	T_HOOK_ENTRY entry = { p__imp, hook };
-	return TrHook(*p__imp, &entry);
+	return TrHook(*p__imp, &entry, pti);
 }
 
 _NT_END

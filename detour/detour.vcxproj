@@ -105,12 +105,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="threads.cpp" />
     <ClCompile Include="TRAMPOLINE.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="detour.h" />
     <ClInclude Include="LDasm.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="threads.h" />
     <ClInclude Include="TRAMPOLINE.h" />
   </ItemGroup>
   <ItemGroup>
