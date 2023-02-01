@@ -105,15 +105,17 @@ loop:
 
 			if (ThreadInfo* next = new ThreadInfo(tbi.ClientId.UniqueThread))
 			{
-				if (0 <= (status = ZwGetContextThread(hThread, next)))
+				if (0 <= (status = ZwSuspendThread(hThread, 0)))
 				{
-					if (0 <= (status = ZwSuspendThread(hThread, 0)))
+					if (0 <= (status = ZwGetContextThread(hThread, next)))
 					{
 						next->next = pti;
 						pti = next;
 						next->hThread = hThread;
 						goto loop;
 					}
+
+					ZwResumeThread(hThread, 0);
 				}
 
 				delete next;
