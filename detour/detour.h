@@ -60,7 +60,7 @@ RtlActivateActivationContextUnsafeFast:
 771F6FC2  push        ebp  
 
 --------------------------------------------------------------------------
-after: TrHook(&__imp_RtlDispatchAPC, hook_RtlDispatchAPC);
+after: TrHook(&__imp_RtlActivateActivationContextUnsafeFast, hook_RtlActivateActivationContextUnsafeFast);
 --------------------------------------------------------------------------
 
 __imp_RtlActivateActivationContextUnsafeFast = 771F6FC2 ( RtlActivateActivationContextUnsafeFast + 2 )
