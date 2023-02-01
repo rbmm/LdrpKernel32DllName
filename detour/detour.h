@@ -113,7 +113,7 @@ void NTAPI TrUnHook(_In_ T_HOOK_ENTRY* entry, _In_ ULONG n, _In_opt_ ThreadInfo*
 // if not need unhook
 // same as: 
 // T_HOOK_ENTRY entry = { p__imp, hook }; 
-// return TrHook(*p__imp, &entry, pti);
+// return TrHook(&entry, 1, pti);
 NTSTATUS NTAPI TrHook(_Inout_ void** p__imp, _In_ PVOID hook, _In_opt_ ThreadInfo* pti = 0);
 
 #define _DECLARE_T_HOOK(pfn) EXTERN_C extern PVOID __imp_ ## pfn;
