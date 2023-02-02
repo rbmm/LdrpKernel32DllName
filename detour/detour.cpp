@@ -12,7 +12,7 @@ PVOID TestJmp(PBYTE pv)
 {
 __loop:
 	ldasm_data ld;
-	BYTE len = ldasm( pv, &ld, is_x64 );
+	[[maybe_unused]] BYTE len = ldasm( pv, &ld, is_x64 );
 
 	if (((ld.flags & (F_INVALID|F_DISP|F_MODRM|F_IMM)) == (F_DISP|F_MODRM)) &&
 		ld.disp_size == 4 && ld.modrm == 0x25 && ld.opcd_size == 1 && 

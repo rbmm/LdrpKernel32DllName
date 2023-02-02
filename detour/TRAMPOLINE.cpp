@@ -250,7 +250,7 @@ void Z_DETOUR_REGION::_free(Z_DETOUR_TRAMPOLINE* pTramp)
 	__debugbreak();
 }
 
-Z_DETOUR_TRAMPOLINE* Z_DETOUR_REGION::_alloc(void* pvTarget)
+Z_DETOUR_TRAMPOLINE* Z_DETOUR_REGION::_alloc([[maybe_unused]] void* pvTarget)
 {
 #ifdef _WIN64
 	ULONG_PTR min, max, cb;
