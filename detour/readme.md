@@ -1,5 +1,5 @@
 *****************************************************************************************************
-## NTSTATUS NTAPI TrInit(PVOID ImageBase = &__ImageBase);
+###### NTSTATUS NTAPI TrInit(PVOID ImageBase = &__ImageBase);
 *****************************************************************************************************
 
 make IAT writable.
@@ -7,7 +7,7 @@ make IAT writable.
 
 look for https://github.com/microsoft/Detours/blob/main/samples/simple/simple.cpp
 
-TimedSleepEx calls the real SleepEx API through the TrueSleepEx function pointer.
+TimedSleepEx calls the real SleepEx API through the ***TrueSleepEx*** function pointer.
 
 ```
 static DWORD (WINAPI * TrueSleepEx)(DWORD dwMilliseconds, BOOL bAlertable) = SleepEx;
@@ -25,11 +25,11 @@ don't do this ! linker already defined
 EXTERN_C PVOID __imp_SleepEx = SleepEx;
 ```
 variable 
-( for x86 this will be __imp__SleepEx@8 and need use __pragma(comment(linker, "/alternatename:___imp_SleepEx=__imp__SleepEx@8")) )
+( for x86 this will be ***__imp__SleepEx@8*** and need use ***__pragma(comment(linker, "/alternatename:___imp_SleepEx=__imp__SleepEx@8"))*** )
 
-so use __imp_SleepEx instead TrueSleepEx and simply call api in the usual and convenient way.
+so use ***__imp_SleepEx*** instead ***TrueSleepEx*** and simply call api in the usual and convenient way.
 
-any imported api SomeApi invoked via __imp_SomeApi ( delayed load via __imp_load_SomeApi ) pointer. use it !
+any imported api SomeApi invoked via ***__imp_SomeApi*** ( delayed load via ***__imp_load_SomeApi*** ) pointer. use it !
 
 example
 
@@ -225,14 +225,14 @@ OK
 ```
 
 *****************************************************************************************************
-## DBG_PRINT_ON() / DBG_PRINT_OFF()
+###### DBG_PRINT_ON() / DBG_PRINT_OFF()
 *****************************************************************************************************
 
 enable / disable debug output ( by default it disabled)
 
 
 *****************************************************************************************************
-## NTSTATUS NTAPI SuspendAll(_Out_ ThreadInfo** ppti);
+###### NTSTATUS NTAPI SuspendAll(_Out_ ThreadInfo** ppti);
 *****************************************************************************************************
 
 enumerate threads in process via NtGetNextThread
@@ -242,7 +242,7 @@ save it context ZwGetContextThread
 link thread info (handle/context) to list
 
 *****************************************************************************************************
-## void NTAPI ResumeAndFree(_In_ ThreadInfo* pti);
+###### void NTAPI ResumeAndFree(_In_ ThreadInfo* pti);
 *****************************************************************************************************
 
 walk thread list ( pti )
@@ -252,7 +252,7 @@ free memory
 
 
 *****************************************************************************************************
-## NTSTATUS NTAPI TrHook(_Inout_ void** p__imp, _In_ PVOID hook, _In_opt_ ThreadInfo* pti)
+###### NTSTATUS NTAPI TrHook(_Inout_ void** p__imp, _In_ PVOID hook, _In_opt_ ThreadInfo* pti)
 ```
 {
 	T_HOOK_ENTRY entry = { p__imp, hook };
@@ -267,7 +267,7 @@ only difference - TrHook do actual patch just, when DetourAttach - after DetourT
 
 
 *****************************************************************************************************
-## void NTAPI TrHook(_In_ T_HOOK_ENTRY* entry, _In_ ULONG n, _In_opt_ ThreadInfo* pti = 0);
+###### void NTAPI TrHook(_In_ T_HOOK_ENTRY* entry, _In_ ULONG n, _In_opt_ ThreadInfo* pti = 0);
 *****************************************************************************************************
 
 try allocate tramploline in -/+ 2GB range ( in 32 bit mode any address is ok) from patched region
