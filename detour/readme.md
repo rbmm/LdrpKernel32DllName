@@ -5,9 +5,9 @@
 make IAT writable.
 
 
-look for https://github.com/microsoft/Detours/blob/main/samples/simple/simple.cpp
+look for [simple.cpp](https://github.com/microsoft/Detours/blob/main/samples/simple/simple.cpp)
 
-TimedSleepEx calls the real SleepEx API through the ***TrueSleepEx*** function pointer.
+**TimedSleepEx** calls the real **SleepEx** API through the ***TrueSleepEx*** function pointer.
 
 ```
 static DWORD (WINAPI * TrueSleepEx)(DWORD dwMilliseconds, BOOL bAlertable) = SleepEx;
@@ -20,13 +20,15 @@ DWORD WINAPI TimedSleepEx(DWORD dwMilliseconds, BOOL bAlertable)
 }
 ```
 
-don't do this ! linker already defined
+**_don't do this !_** linker already defined
 ```
 EXTERN_C PVOID __imp_SleepEx = SleepEx;
 ```
 variable 
-( for x86 this will be ***__imp__SleepEx@8*** and need use ***__pragma(comment(linker, "/alternatename:___imp_SleepEx=__imp__SleepEx@8"))*** )
-
+( for x86 this will be ***__imp__SleepEx@8*** and need use 
+```
+__pragma(comment(linker, "/alternatename:___imp_SleepEx=__imp__SleepEx@8"))
+```
 so use ***__imp_SleepEx*** instead ***TrueSleepEx*** and simply call api in the usual and convenient way.
 
 any imported api SomeApi invoked via ***__imp_SomeApi*** ( delayed load via ***__imp_load_SomeApi*** ) pointer. use it !
@@ -100,7 +102,7 @@ another example, with unhook:
 ```
 DWORD WINAPI hook_SleepEx( _In_ DWORD dwMilliseconds, _In_ BOOL bAlertable )
 {
-	// don't use any TrueSleepEx !! https://github.com/microsoft/Detours/blob/main/samples/simple/simple.cpp#L23
+	// don't use any [TrueSleepEx](https://github.com/microsoft/Detours/blob/main/samples/simple/simple.cpp#L23) !! 
 	ULONG ret = SleepEx(dwMilliseconds, bAlertable);
 
 	DbgPrint("%s(%x, %x) = %x\n", __FUNCTION__, dwMilliseconds, bAlertable, ret);
@@ -116,7 +118,7 @@ hook_MessageBoxW(
 				 _In_opt_ PCWSTR lpCaption,
 				 _In_ UINT uType)
 {
-	// don't use any Real_MessageBoxW !! https://raw.githubusercontent.com/microsoft/Detours/main/samples/traceapi/_win32.cpp
+	// don't use any [Real_MessageBoxW](https://raw.githubusercontent.com/microsoft/Detours/main/samples/traceapi/_win32.cpp) !! 
 	
 	int ret = MessageBoxW(hWnd, lpText, __FUNCTIONW__, uType);
 
@@ -262,7 +264,7 @@ free memory
 *****************************************************************************************************
 
 simplified version, for hook single api and when not need unhook it
-almost identical to DetourAttach ( https://github.com/microsoft/Detours/wiki/DetourAttach )
+almost identical to [DetourAttach](https://github.com/microsoft/Detours/wiki/DetourAttach)
 only difference - TrHook do actual patch just, when DetourAttach - after DetourTransactionCommit
 
 
@@ -274,8 +276,8 @@ try allocate tramploline in -/+ 2GB range ( in 32 bit mode any address is ok) fr
 hook api by set JMP hook at it begin and save original instruction inside trampoline
 walk by thread list (optional) and if need (Pc in JMP) - adjust context of threads
 
-internal PVOID Z_DETOUR_TRAMPOLINE::Init(PVOID pvTarget) invoked
-here exist several cases:
+
+exist several cases:
 
 ```
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -675,18 +677,19 @@ at the begin of hooked api, we set of direct JMP to hook if this is possible or 
 ( if more 2GB distance between someapi and hook_someapi )
 
 so, after hook will be or
-
+```
 someapi:
 	jmp hook_someapi ; JMP rel32
-	
+```	
 or 
 
+```
 someapi:
 	jmp tramp ; JMP rel32
 
 tramp:
 	jmp [hook_someapi] ; JMP [m64]
-	
+```	
 	
 at the end of trampoline usually will be relative JMP to the code after JMP at function body
 except case 8 - when hooked function is too small ( ret or JMP instruction already in tramoline )
