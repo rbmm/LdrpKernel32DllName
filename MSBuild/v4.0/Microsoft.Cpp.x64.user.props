@@ -26,6 +26,7 @@
       <AdditionalLibraryDirectories>"$(OutDir)"</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+	  <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
@@ -42,6 +43,7 @@
       <OmitFramePointers>true</OmitFramePointers>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+	  <BuildStlModules>false</BuildStlModules>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
