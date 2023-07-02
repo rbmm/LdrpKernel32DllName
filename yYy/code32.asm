@@ -2,7 +2,7 @@
 
 .MODEL FLAT
 
-x64 segment ALIGN(16) READ WRITE EXECUTE
+.code
 
 ?FindLdrpKernel3264DllName@NT@@YI_KPA_K@Z proc
 	xor edx,edx
@@ -34,7 +34,5 @@ INCLUDE <../x64/release/64btr.asm>
 	mov esi,[esp+8]
 	ret 8
 ?InitBootstrapI64@NT@@YIJPAX0PB_WK@Z endp
-
-x64 ends
 
 end

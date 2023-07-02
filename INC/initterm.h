@@ -20,7 +20,7 @@ extern "C"
 
 #pragma const_seg()
 
-  void _initterm(const _PVFV *ppfn, const _PVFV *end)
+  void __initterm(const _PVFV *ppfn, const _PVFV *end)
   {
 	  do 
 	  {
@@ -33,8 +33,8 @@ extern "C"
 
   void initterm()
   {
-	  _initterm(&__xi_a, &__xi_z);
-	  _initterm(&__xc_a, &__xc_z);
+	  __initterm(&__xi_a, &__xi_z);
+	  __initterm(&__xc_a, &__xc_z);
   }
 
   SLIST_HEADER g__onexit;
@@ -67,7 +67,6 @@ extern "C"
 	  __debugbreak();
 	  return -1;
   }
-
   void destroyterm()
   {
 	  while (ONEXIT* p = static_cast<ONEXIT*>(InterlockedPopEntrySList(&g__onexit)))

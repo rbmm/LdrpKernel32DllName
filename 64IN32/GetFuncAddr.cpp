@@ -13,23 +13,18 @@ char __fastcall fmemcmp(
 						size_t count
 						)ASM_FUNCTION;
 
-PVOID __fastcall get_hmod(PCWSTR lpModuleName)
+PIMAGE_DOS_HEADER GetNtBase()
 {
-	CPP_FUNCTION;
-
-	if (!lpModuleName || !*lpModuleName)
-	{
-		return CONTAINING_RECORD(((NT::_TEB*)NtCurrentTeb())->ProcessEnvironmentBlock->Ldr->InMemoryOrderModuleList.Flink->Flink, 
-			_LDR_DATA_TABLE_ENTRY, InMemoryOrderLinks)->DllBase;
-	}
-
-	__debugbreak();
-	return 0;
+	return (PIMAGE_DOS_HEADER)CONTAINING_RECORD(
+		reinterpret_cast<_TEB*>(NtCurrentTeb())->ProcessEnvironmentBlock->Ldr->InInitializationOrderModuleList.Flink,
+		_LDR_DATA_TABLE_ENTRY, InInitializationOrderLinks)->DllBase;
 }
 
-PVOID __fastcall GetFuncAddressEx(PIMAGE_DOS_HEADER pidh, PCSTR lpsz)
+PVOID __fastcall GetFuncAddress(PCSTR lpsz)
 {
 	CPP_FUNCTION;
+
+	PIMAGE_DOS_HEADER pidh = GetNtBase();
 
 	PIMAGE_NT_HEADERS pinth = (PIMAGE_NT_HEADERS)RtlOffsetToPointer(pidh, pidh->e_lfanew);
 
@@ -67,6 +62,7 @@ PVOID __fastcall GetFuncAddressEx(PIMAGE_DOS_HEADER pidh, PCSTR lpsz)
 		} while (a < b);
 	}
 
+	__debugbreak();
 	return 0;
 }
 

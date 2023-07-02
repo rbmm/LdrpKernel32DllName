@@ -2,14 +2,11 @@
 
 #include <intrin.h>
 
-#pragma code_seg(".text$zz")
+#pragma code_seg(".text$nm")
 
-#pragma intrinsic(strcmp, wcslen, strlen)
+#pragma intrinsic(memcpy, strcmp, wcslen, strlen)
 
-#define _EXTERN_C_BEGIN extern "C" {
-#define _EXTERN_C_END }
-
-_EXTERN_C_BEGIN
+EXTERN_C_START
 
 #pragma warning(disable : 4273)
 
@@ -81,7 +78,8 @@ DbgPrint (
 
 #pragma warning(default : 4273)
 
-_EXTERN_C_END
+EXTERN_C_END
 
-PVOID __fastcall get_hmod(PCWSTR lpModuleName);
-PVOID __fastcall GetFuncAddressEx(PIMAGE_DOS_HEADER pidh, PCSTR lpsz);
+PVOID __fastcall GetFuncAddress(PCSTR lpsz);
+
+PIMAGE_DOS_HEADER GetNtBase();

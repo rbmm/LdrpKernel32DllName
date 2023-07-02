@@ -229,17 +229,6 @@ PsSetContextThread
 	MODE PreviousMode
 	);
 
-NTDLL_(void)
-KeSetSystemAffinityThread
-(
-	KAFFINITY AffinityMask
-);
-
-NTDLL_(void)
-KeRevertToUserAffinityThread
-(
-);
-
 NTDLL_(PIMAGE_NT_HEADERS)
 RtlImageNtHeader 
 (
@@ -593,7 +582,6 @@ ZwRaiseHardError
 	PHARDERROR_RESPONSE Response
 );
 
-NTDLL_(PEPROCESS) PsGetThreadProcess(PKTHREAD);
 NTDLL_(BOOLEAN) PsIsProcessBeingDebugged(PEPROCESS);
 
 NTDLL ZwQueueApcThread(HANDLE hThread, PKNORMAL_ROUTINE ApcRoutine, PVOID ApcContext, PVOID Argument1, PVOID Argument2);
@@ -811,20 +799,6 @@ KeInsertQueueApc
 	IN PVOID Argument1,
 	IN PVOID Argument2,
 	IN ULONG PriorityIncrement
-);
-
-NTDLL
-PsLookupProcessByProcessId
-(
-	IN HANDLE ProcessId,
-	OUT PEPROCESS* pProcess
-);
-
-NTDLL
-PsLookupThreadByThreadId
-(
-	IN HANDLE ThreadId,
-	OUT PETHREAD* pThread
 );
 
 NTDLL

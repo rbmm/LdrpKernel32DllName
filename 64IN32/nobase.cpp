@@ -1,14 +1,10 @@
 #include "../inc/StdAfx.h"
 
-#pragma intrinsic(memcpy,strcmp,wcslen)
-
 _NT_BEGIN
 
 #include "../inc/nobase.h"
 //#define _PRINT_CPP_NAMES_
 #include "../inc/asmfunc.h"
-
-PCWSTR __cdecl wkernel32()ASM_FUNCTION;
 
 ULONG GetSectionSize(PIMAGE_SECTION_HEADER pish)
 {
@@ -26,7 +22,7 @@ PVOID FindLdrpKernel32DllName(_Out_ PULONG_PTR pBuffer)
 {
 	CPP_FUNCTION;
 
-	if (PVOID hmod = get_hmod(0))
+	if (PVOID hmod = GetNtBase())
 	{
 		if (PIMAGE_NT_HEADERS pinth = RtlImageNtHeader(hmod))
 		{
@@ -53,7 +49,7 @@ PVOID FindLdrpKernel32DllName(_Out_ PULONG_PTR pBuffer)
 						pv = VirtualAddress;
 
 						UNICODE_STRING kernel32;
-						RtlInitUnicodeString(&kernel32, wkernel32());
+						RtlInitUnicodeString(&kernel32, L"kernel32.dll");
 
 						do 
 						{

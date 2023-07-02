@@ -1,6 +1,3 @@
-include <../inc/nobase64.inc>
-
-_TEXT segment
 
 ; void *__cdecl NT::FindLdrpKernel32DllName(unsigned __int64 *)
 extern ?FindLdrpKernel32DllName@NT@@YAPEAXPEA_K@Z : PROC
@@ -8,16 +5,24 @@ extern ?FindLdrpKernel32DllName@NT@@YAPEAXPEA_K@Z : PROC
 ; long __cdecl NT::InitBootstrapI(void *,void **,const wchar_t *,unsigned long)
 extern ?InitBootstrapI@NT@@YAJPEAXPEAPEAXPEB_WK@Z : PROC
 
+; void *__cdecl NT::GetFuncAddress(const char *)
+extern ?GetFuncAddress@NT@@YAPEAXPEBD@Z : PROC
+
+.code
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; must be first function in .text section !
+
 ep proc
 	mov rax,gs:[10h]
 	xchg rsp,rax
 	push rax
 	sub rsp,28h
 	
-	movsxd rcx,ecx
-	movsxd rdx,edx
-	movsxd r8,edi
-	movsxd r9,esi
+	mov ecx,ecx
+	mov edx,edx
+	mov r8d,edi
+	mov r9d,esi
 	
 	test rdx,rdx
 	jz @@0
@@ -33,18 +38,56 @@ ep proc
 	ret
 ep endp
 
-_HMOD ntdll, <>
+common_imp_call proc private
+  push r9
+  push r8
+  push rdx
+  push rcx
+  sub rsp,28h
+  mov rcx,rax
+  call ?GetFuncAddress@NT@@YAPEAXPEBD@Z
+  add rsp,28h
+  pop rcx
+  pop rdx
+  pop r8
+  pop r9
+  jmp rax
+common_imp_call endp
 
-createWstring ?wkernel32@NT@@YAPEB_WXZ, kernel32.dll
+?fmemcmp@NT@@YADPEBX0_K@Z proc
+  mov rax,rsi
+  mov rsi,rcx
+  xchg rdi,rdx
+  mov ecx,r8d
+  repe cmpsb
+  mov rsi,rax
+  mov rdi,rdx
+  mov al,0
+  jz @@2
+  js @@1
+  inc al
+@@2:
+  ret
+@@1:
+  dec al
+  ret
+?fmemcmp@NT@@YADPEBX0_K@Z endp
 
-createFunc NtAllocateVirtualMemory
-createFunc NtWriteVirtualMemory
-createFunc NtProtectVirtualMemory
-createFunc NtFreeVirtualMemory
-createFunc RtlImageNtHeader
-createFunc RtlEqualUnicodeString
-createFunc RtlInitUnicodeString
+NtApi MACRO name
+name proc
+	lea rax,@@1
+	jmp common_imp_call
+@@1: 
+	DB '&name',0
+name endp
+ENDM
 
-_TEXT ends
+NtApi NtAllocateVirtualMemory
+NtApi NtWriteVirtualMemory
+NtApi NtProtectVirtualMemory
+NtApi NtFreeVirtualMemory
+NtApi RtlImageNtHeader
+NtApi RtlEqualUnicodeString
+NtApi RtlInitUnicodeString
 
 end
