@@ -54,25 +54,6 @@ common_imp_call proc private
   jmp rax
 common_imp_call endp
 
-?fmemcmp@NT@@YADPEBX0_K@Z proc
-  mov rax,rsi
-  mov rsi,rcx
-  xchg rdi,rdx
-  mov ecx,r8d
-  repe cmpsb
-  mov rsi,rax
-  mov rdi,rdx
-  mov al,0
-  jz @@2
-  js @@1
-  inc al
-@@2:
-  ret
-@@1:
-  dec al
-  ret
-?fmemcmp@NT@@YADPEBX0_K@Z endp
-
 NtApi MACRO name
 name proc
 	lea rax,@@1

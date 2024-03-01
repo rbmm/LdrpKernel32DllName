@@ -72,6 +72,7 @@
       <FixedBaseAddress>false</FixedBaseAddress>
       <ProgramDatabaseFile />
       <Driver>Driver</Driver>
+      <AdditionalDependencies />
     </Link>
     <PostBuildEvent>
       <Command>cd $(OutDir)
@@ -81,7 +82,7 @@ $(SolutionDir)release\cta.exe *.text*64btr.asm*$(TargetFileName)*toasm*nowait
   </ItemDefinitionGroup>
   <ItemGroup>
     <CustomBuild Include="code64.asm">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ml64 /c /Cp /Fl %(Filename)%(Extension)
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ml64 /c /Cp %(Filename)%(Extension)
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>

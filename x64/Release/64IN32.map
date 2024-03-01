@@ -1,0 +1,66 @@
+ 64IN32
+
+ Timestamp is 65e1b9c1 (Fri Mar  1 13:19:29 2024)
+
+ Preferred load address is 0000000140000000
+
+ Start         Length     Name                   Class
+ 0001:00000000 00000138H .text$mn                CODE
+ 0001:00000138 00000398H .text$nm                CODE
+ 0001:000004d0 0000001aH .text$nm$s              CODE
+ 0002:00000000 0000001cH .rdata                  DATA
+ 0002:0000001c 00000028H .rdata$voltmd           DATA
+ 0002:00000044 000000b0H .rdata$zzzdbg           DATA
+ 0002:000000f4 0000004cH .xdata                  DATA
+ 0003:00000000 00000024H .pdata                  DATA
+
+  Address         Publics by Value              Rva+Base               Lib:Object
+
+ 0000:00000000       __AbsoluteZero             0000000000000000     <absolute>
+ 0000:00000000       __arm64x_extra_rfe_table   0000000000000000     <absolute>
+ 0000:00000000       __arm64x_extra_rfe_table_size 0000000000000000     <absolute>
+ 0000:00000000       __arm64x_native_entrypoint 0000000000000000     <absolute>
+ 0000:00000000       __arm64x_redirection_metadata 0000000000000000     <absolute>
+ 0000:00000000       __arm64x_redirection_metadata_count 0000000000000000     <absolute>
+ 0000:00000000       __dynamic_value_reloc_table 0000000000000000     <absolute>
+ 0000:00000000       __enclave_config           0000000000000000     <absolute>
+ 0000:00000000       __guard_check_icall_a64n_fptr 0000000000000000     <absolute>
+ 0000:00000000       __guard_eh_cont_count      0000000000000000     <absolute>
+ 0000:00000000       __guard_eh_cont_table      0000000000000000     <absolute>
+ 0000:00000000       __guard_fids_count         0000000000000000     <absolute>
+ 0000:00000000       __guard_fids_table         0000000000000000     <absolute>
+ 0000:00000000       __guard_flags              0000000000000000     <absolute>
+ 0000:00000000       __guard_iat_count          0000000000000000     <absolute>
+ 0000:00000000       __guard_iat_table          0000000000000000     <absolute>
+ 0000:00000000       __guard_longjmp_count      0000000000000000     <absolute>
+ 0000:00000000       __guard_longjmp_table      0000000000000000     <absolute>
+ 0000:00000000       __hybrid_auxiliary_delayload_iat 0000000000000000     <absolute>
+ 0000:00000000       __hybrid_auxiliary_delayload_iat_copy 0000000000000000     <absolute>
+ 0000:00000000       __hybrid_auxiliary_iat     0000000000000000     <absolute>
+ 0000:00000000       __hybrid_auxiliary_iat_copy 0000000000000000     <absolute>
+ 0000:00000000       __hybrid_code_map          0000000000000000     <absolute>
+ 0000:00000000       __hybrid_code_map_count    0000000000000000     <absolute>
+ 0000:00000000       __x64_code_ranges_to_entry_points 0000000000000000     <absolute>
+ 0000:00000000       __x64_code_ranges_to_entry_points_count 0000000000000000     <absolute>
+ 0001:00000000       ep                         0000000140000230 f   code64.obj
+ 0001:00000056       NtAllocateVirtualMemory    0000000140000286 f   code64.obj
+ 0001:00000077       NtWriteVirtualMemory       00000001400002a7 f   code64.obj
+ 0001:00000095       NtProtectVirtualMemory     00000001400002c5 f   code64.obj
+ 0001:000000b5       NtFreeVirtualMemory        00000001400002e5 f   code64.obj
+ 0001:000000d5       RtlImageNtHeader           0000000140000305 f   code64.obj
+ 0001:000000f2       RtlEqualUnicodeString      0000000140000322 f   code64.obj
+ 0001:00000114       RtlInitUnicodeString       0000000140000344 f   code64.obj
+ 0001:00000138       ?GetFuncAddress@NT@@YAPEAXPEBD@Z 0000000140000368 f   GetFuncAddr.obj
+ 0001:00000254       ?FindLdrpKernel32DllName@NT@@YAPEAXPEA_K@Z 0000000140000484 f   nobase.obj
+ 0001:00000390       ?InitBootstrapI@NT@@YAJPEAXPEAPEAXPEB_WK@Z 00000001400005c0 f   nobase.obj
+ 0001:000004d0       ??_C@_1BK@MGMFAEKH@?$AAk?$AAe?$AAr?$AAn?$AAe?$AAl?$AA3?$AA2?$AA?4?$AAd?$AAl?$AAl@FNODOBFM@ 0000000140000700     nobase.obj
+ 0002:0000001c       __volatile_metadata        000000014000073c     <linker-defined>
+
+ entry point at        0001:00000000
+
+ Static symbols
+
+ 0001:00000038       common_imp_call            0000000140000268 f   code64.obj
+ 0002:000000f4       $unwind$?GetFuncAddress@NT@@YAPEAXPEBD@Z 0000000140000814     GetFuncAddr.obj
+ 0002:00000110       $unwind$?FindLdrpKernel32DllName@NT@@YAPEAXPEA_K@Z 0000000140000830     nobase.obj
+ 0002:00000128       $unwind$?InitBootstrapI@NT@@YAJPEAXPEAPEAXPEB_WK@Z 0000000140000848     nobase.obj

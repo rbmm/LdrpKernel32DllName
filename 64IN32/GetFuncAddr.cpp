@@ -7,12 +7,6 @@ _NT_BEGIN
 //#define _PRINT_CPP_NAMES_
 #include "../inc/asmfunc.h"
 
-char __fastcall fmemcmp(
-						const void *buf1,
-						const void *buf2,
-						size_t count
-						)ASM_FUNCTION;
-
 PIMAGE_DOS_HEADER GetNtBase()
 {
 	return (PIMAGE_DOS_HEADER)CONTAINING_RECORD(
@@ -35,15 +29,13 @@ PVOID __fastcall GetFuncAddress(PCSTR lpsz)
 	PDWORD AddressOfFunctions = (PDWORD)RtlOffsetToPointer(pidh, pied->AddressOfFunctions);
 	PWORD AddressOfNameOrdinals = (PWORD)RtlOffsetToPointer(pidh, pied->AddressOfNameOrdinals);
 
-	DWORD a = 0, b = pied->NumberOfNames, o;
+	DWORD a = 0, b, o;
 
-	SIZE_T len = strlen(lpsz) + 1;
-
-	if (b) 
+	if (b = pied->NumberOfNames) 
 	{
 		do
 		{
-			char i = fmemcmp(lpsz, RtlOffsetToPointer(pidh, AddressOfNames[o = (a + b) >> 1]), len);
+			int i = strcmp(lpsz, RtlOffsetToPointer(pidh, AddressOfNames[o = (a + b) >> 1]));
 			if (!i)
 			{
 				PVOID pv = RtlOffsetToPointer(pidh, AddressOfFunctions[AddressOfNameOrdinals[o]]);

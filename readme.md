@@ -1,22 +1,25 @@
 code in Payload<32|64>.dll search for
 
+```cpp
 UNICODE_STRING LdrpKernel32DllName = RTL_CONSTANT_STRING(L"KERNEL32.DLL");
+```
 
-inside ntdll, and if found - in new created process overwrite KERNEL32.DLL to own "bootstrap" dll name ( LdrpKernel<32|64>.dll )
+inside ntdll, and if found - in new created process overwrite `KERNEL32.DLL` to own "bootstrap" dll name ( LdrpKernel<32|64>.dll )
 as result LdrpKernel<32|64>.dll loaded to new process. currently it mast export 2 api:
 BaseThreadInitThunk and TermsrvGetWindowsDirectoryW
 
+```cpp
 EXTERN_C
 WINBASEAPI
 NTSTATUS
 FASTCALL
 BaseThreadInitThunk(BOOL bInitializeTermsrv, 
-	LPTHREAD_START_ROUTINE lpStartAddress, 
-	PVOID lpParameter
-	);
+  LPTHREAD_START_ROUTINE lpStartAddress, 
+  PVOID lpParameter
+  );
+```
 
-
-BaseThreadInitThunk with bInitializeTermsrv = true called just before loader begin initialize static linked dlls from exe
+`BaseThreadInitThunk` with `bInitializeTermsrv = true` called just before loader begin initialize static linked dlls from exe
 we can here load Payload<32|64>.dll and initiaize it
 as result code of Payload<32|64>.dll will be called not only before exe entry point (for this enough inject apc in first thread of new process)
 but and before tls initializers and other dlls. sense only in early control.
