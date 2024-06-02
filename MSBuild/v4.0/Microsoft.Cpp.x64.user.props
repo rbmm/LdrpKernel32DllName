@@ -8,7 +8,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <IncludePath>$(INC_ROOT)shared;$(INC_ROOT)km;$(INC_ROOT)um;$(INC_ROOT)km\crt</IncludePath>
-    <LibraryPath>$(LIB_ROOT)km\x64;$(LIB_ROOT)um\x64</LibraryPath>
+    <LibraryPath>$(LIB_ROOT)km\x64;$(LIB_ROOT)um\x64;$(LIB_ROOT)ucrt\x64</LibraryPath>
     <IntDir>$(SolutionDir)tmp\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <ExcludePath>
     </ExcludePath>
@@ -20,13 +20,13 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
-      <AdditionalDependencies>BufferOverflow.lib;msvcrt.lib;ntdllp.lib;kernel32.lib;advapi32.lib;user32.lib</AdditionalDependencies>
+      <AdditionalDependencies>BufferOverflow.lib;ntdllp.lib;kernel32.lib;advapi32.lib;user32.lib</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
       <AdditionalLibraryDirectories>"$(OutDir)"</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-	  <TargetMachine>MachineX64</TargetMachine>
+    <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
@@ -43,7 +43,7 @@
       <OmitFramePointers>true</OmitFramePointers>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-	  <BuildStlModules>false</BuildStlModules>
+    <BuildStlModules>false</BuildStlModules>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
